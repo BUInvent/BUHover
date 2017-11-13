@@ -19,61 +19,7 @@ It blinks the D7 LED on your Particle device. If you have an LED wired to D0, it
 // First, we're going to make some variables.
 // This is our "shorthand" that we'll use throughout the program:
 
-int led1 = D0; // Instead of writing D0 over and over again, we'll write led1
-// You'll need to wire an LED to this one to see it blink.
-
-int led2 = D7; // Instead of writing D7 over and over again, we'll write led2
-// This one is the little blue LED on your board. On the Photon it is next to D7, and on the Core it is next to the USB jack.
-
-enum weatherState {
-    WEATHER_STATE_BRING_UMBRELLA,
-    WEATHER_STATE_CHANCE_OF_RAIN,
-    WEATHER_STATE_NO_RAIN,
-    WEATHER_STATE_CANT_CONNECT
-};
-
-// returns after 1 second
-void controlWeatherLed(int state) {
-    switch (state) {
-    case WEATHER_STATE_BRING_UMBRELLA:
-        digitalWrite(led1, HIGH);
-        digitalWrite(led2, HIGH);
-        delay(1000);
-        break;
-
-    case WEATHER_STATE_CHANCE_OF_RAIN:
-        digitalWrite(led1, HIGH);
-        digitalWrite(led2, HIGH);
-        delay(200);
-
-        digitalWrite(led1, LOW);
-        digitalWrite(led2, LOW);
-        delay(800);
-        break;
-
-    case WEATHER_STATE_NO_RAIN:
-        digitalWrite(led1, LOW);
-        digitalWrite(led2, LOW);
-        delay(1000);
-        break;
-
-    case WEATHER_STATE_CANT_CONNECT:
-    default:
-        int i;
-        for (i = 0; i < 5; i++) {
-            digitalWrite(led1, HIGH);
-            digitalWrite(led2, HIGH);
-            delay(100);
-            digitalWrite(led1, LOW);
-            digitalWrite(led2, LOW);
-            delay(100);
-        }
-
-        break;
-    }
-}
-
-void gotForecast(const char *event, const char *data) {
+void gotScores(const char *event, const char *data) {
     static int i = 0;
     i++;
     Serial.print(i);
@@ -96,11 +42,7 @@ void setup() {
 
     // It's important you do this here, inside the setup() function rather than outside it or in the loop function.
 
-    pinMode(led1, OUTPUT);
-    pinMode(led2, OUTPUT);
-    delay(5000);
-
-    if (Particle.subscribe("hook-response/getscores", gotForecast, MY_DEVICES)) {
+    if (Particle.subscribe("hook-response/getscores", gotScores, MY_DEVICES)) {
         Serial.println("subscribed!");
     } else {
         Serial.println("error: subscription failed");
@@ -119,31 +61,7 @@ void loop() {
         // polling Webhook every 2 minutes is 720 API calls/day
         nextTrigger = millis() + 5*1000;
 
-        Serial.println("Requesting Forecast");
+        Serial.println("Requesting Score");
         Particle.publish("getscores");
     }
-
-    controlWeatherLed(WEATHER_STATE_BRING_UMBRELLA);
-    controlWeatherLed(WEATHER_STATE_BRING_UMBRELLA);
-    controlWeatherLed(WEATHER_STATE_BRING_UMBRELLA);
-    controlWeatherLed(WEATHER_STATE_BRING_UMBRELLA);
-    controlWeatherLed(WEATHER_STATE_BRING_UMBRELLA);
-
-    controlWeatherLed(WEATHER_STATE_CHANCE_OF_RAIN);
-    controlWeatherLed(WEATHER_STATE_CHANCE_OF_RAIN);
-    controlWeatherLed(WEATHER_STATE_CHANCE_OF_RAIN);
-    controlWeatherLed(WEATHER_STATE_CHANCE_OF_RAIN);
-    controlWeatherLed(WEATHER_STATE_CHANCE_OF_RAIN);
-
-    controlWeatherLed(WEATHER_STATE_CANT_CONNECT);
-    controlWeatherLed(WEATHER_STATE_CANT_CONNECT);
-    controlWeatherLed(WEATHER_STATE_CANT_CONNECT);
-    controlWeatherLed(WEATHER_STATE_CANT_CONNECT);
-    controlWeatherLed(WEATHER_STATE_CANT_CONNECT);
-
-    controlWeatherLed(WEATHER_STATE_NO_RAIN);
-    controlWeatherLed(WEATHER_STATE_NO_RAIN);
-    controlWeatherLed(WEATHER_STATE_NO_RAIN);
-    controlWeatherLed(WEATHER_STATE_NO_RAIN);
-    controlWeatherLed(WEATHER_STATE_NO_RAIN);
 }
