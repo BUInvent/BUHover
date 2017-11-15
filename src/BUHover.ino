@@ -19,16 +19,36 @@ It blinks the D7 LED on your Particle device. If you have an LED wired to D0, it
 // First, we're going to make some variables.
 // This is our "shorthand" that we'll use throughout the program:
 
+String home_score, away_score, period, intermission, seconds_remaining;
+
 void gotScores(const char *event, const char *data) {
-    static int i = 0;
-    i++;
-    Serial.print(i);
-    Serial.print(event);
-    Serial.print(", data: ");
+
+    Serial.print("data: ");
     if (data)
         Serial.println(data);
     else
         Serial.println("NULL");
+
+    home_score = strtok(strdup(data), ",");
+    Serial.print("home_score = ");
+    Serial.println(home_score);
+
+    away_score = strtok(NULL, ",");
+    Serial.print("away_score = ");
+    Serial.println(away_score);
+
+    period = strtok(NULL, ",");
+    Serial.print("period = ");
+    Serial.println(period);
+
+    intermission = strtok(NULL, ",");
+    Serial.print("intermission = ");
+    Serial.println(intermission);
+
+    seconds_remaining = strtok(NULL, ",");
+    Serial.print("seconds_remaining = ");
+    Serial.println(seconds_remaining);
+
 }
 
 // Having declared these variables, let's move on to the setup function.
@@ -42,7 +62,7 @@ void setup() {
 
     // It's important you do this here, inside the setup() function rather than outside it or in the loop function.
 
-    if (Particle.subscribe("hook-response/getscores", gotScores, MY_DEVICES)) {
+    if (Particle.subscribe("hook-response/NHLscores", gotScores, MY_DEVICES)) {
         Serial.println("subscribed!");
     } else {
         Serial.println("error: subscription failed");
@@ -58,10 +78,11 @@ void loop() {
     static unsigned long nextTrigger = 10 * 1000;
 
     if (nextTrigger < millis()) {
-        // polling Webhook every 2 minutes is 720 API calls/day
+        // polling Webhook every 5 seconds is 720 API calls/day
         nextTrigger = millis() + 5*1000;
 
         Serial.println("Requesting Score");
-        Particle.publish("getscores");
+        Particle.publish("NHLscores");
+
     }
 }
