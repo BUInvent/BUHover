@@ -1,43 +1,14 @@
   /*
       Project BUScore by Jason and Kla
       This project file is for the "HoverBoard" (Particle Photon wifi module)
-      It will grab data from the webhook, parse it,
-      and send it to the "BattleShip"
+      It will grab data from the webhook, parse it, and send it to the "BattleShip"
                                                             */
 
 #include "functions.h"
 
-String data_temp = "";
-
-void gotScores(const char *event, const char *data) {
-
-    if(data == data_temp) {}
-
-    else {
-
-      String isUnplayed = strtok(strdup(data), ",");
-  		String isinProgress = strtok(NULL, ",");
-  		String isCompleted = strtok(NULL, ",");
-
-      if (isUnplayed == "true") {
-        pregame();
-      }
-
-      else if (isinProgress == "true") {
-      }
-
-      else if (isCompleted == "true") {
-        postgame(strdup(data));
-      }
-    }
-
-    data_temp = data;
-
-}
-
 void setup() {
     // subscribe to the webhook
-    Particle.subscribe("hook-response/NHLscores", gotScores, MY_DEVICES);
+    Particle.subscribe("hook-response/NHLscores2", gotScores, MY_DEVICES);
 }
 
 
@@ -46,8 +17,8 @@ void loop() {
 
     // pull the webhook every 5 seconds
     if (nextTrigger < millis()) {
-        nextTrigger = millis() + 5*1000;
-        Particle.publish("NHLscores");
+        nextTrigger = millis() + 10*1000;
+        Particle.publish("NHLscores2");
 
     }
 }
