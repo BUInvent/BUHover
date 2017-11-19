@@ -26,7 +26,13 @@ void gotScores(const char *event, const char *data) {
       }
 
       else if (strcmp(isinProgress, "true") == 0) {
-        livegame(strdup(data));
+
+        String home_score = strtok(NULL, ",");
+        String away_score = strtok(NULL, ",");
+        String period = strtok(NULL, ",");
+        String seconds_remaining = strtok(NULL, ",");
+        livegame(home_score, away_score, period, seconds_remaining);
+
       }
 
       else if (strcmp(isCompleted, "true") == 0) {
@@ -50,16 +56,7 @@ void pregame() {
 }
 
 
-void livegame(char *data) {
-
-  String nothing = strtok(strdup(data), ",");
-  nothing = strtok(NULL, ",");
-  nothing = strtok(NULL, ",");
-  nothing = strtok(NULL, ",");
-  String home_score = strtok(NULL, ",");
-  String away_score = strtok(NULL, ",");
-  String period = strtok(NULL, ",");
-  String seconds_remaining = strtok(NULL, ",");
+void livegame( String home_score, String away_score, String period, String seconds_remaining ) {
 
   if (strcmp(seconds_remaining, "") == 0) {
     Serial.println("data," + home_score + "," + away_score + "," + period + ",0,0");
