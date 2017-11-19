@@ -1,7 +1,7 @@
   /*
       Project BUScore by Jason and Kla
       This project file is for the "HoverBoard" (Particle Photon wifi module)
-      It will grab data from the webhook, parse it, and send it to the "BattleShip"
+      It is the main function that will  grab data from the webhook, parse it, and send it to the "BattleShip"
                                                                                       */
 
 #include "functions.h"

@@ -1,51 +1,19 @@
 
-#include "functions.h"
+/*
+    Project BUScore by Jason and Kla
+    This project file is for the "HoverBoard" (Particle Photon wifi module)
+    It containst the functions that grab data from the webhook, parse it, and send it to the "BattleShip"
+                                                                                    */
 
+#include "functions.h"
 String data_byte;
 
 void gotScores(const char *event, const char *data) {
 
-  data_byte = strtok(strdup(data), ",");
-  String isUnplayed = strtok(NULL, ",");
-  String isinProgress = strtok(NULL, ",");
-  String isCompleted = strtok(NULL, ",");
-  String home_score = strtok(NULL, ",");
-  String away_score = strtok(NULL, ",");
-  String quarter = strtok(NULL, ",");
-  String intermission = strtok(NULL, ",");
-  String seconds_remaining = strtok(NULL, ",");
-
-  Serial.println();
-  Serial.print("data = ");
-  Serial.println(data);
-  Serial.print("isUnplayed = ");
-  Serial.println(isUnplayed);
-  Serial.print("isinProgress = ");
-  Serial.println(isinProgress);
-  Serial.print("isCompleted = ");
-  Serial.println(isCompleted);
-  Serial.print("home_score = ");
-  Serial.println(home_score);
-  Serial.print("away_score = ");
-  Serial.println(away_score);
-  Serial.print("quarter = ");
-  Serial.println(quarter);
-  Serial.print("intermission = ");
-  Serial.println(intermission);
-  Serial.print("seconds_remaining = ");
-  Serial.println(seconds_remaining);
-
-    static String data_temp = "";
-
-    Serial.println();
-    Serial.print("data = ");
-    Serial.println(data);
-
+    static String data_temp;
     data_byte = strtok(strdup(data), ",");
 
-    if ( strcmp(data_byte, "data") != 0 || strcmp(data, data_temp) == 0) {
-        Serial.println("no update");
-    }
+    if ( strcmp(data_byte, "data") != 0 || strcmp(data, data_temp) == 0) {}
 
     else {
 
@@ -64,9 +32,10 @@ void gotScores(const char *event, const char *data) {
       else if (strcmp(isCompleted, "true") == 0) {
         postgame(strdup(data));
       }
-    }
 
-    data_temp = data;
+      data_temp = data;
+
+    }
 
 }
 
@@ -76,6 +45,7 @@ void pregame() {
   Serial.println("data,0,0,0,0,0");
 
 }
+
 
 void livegame(char *data) {
 
