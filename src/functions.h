@@ -5,6 +5,4 @@
                                                                                     */
 
 void gotScores(const char *, const char *);
-void pregame();
-void livegame(char *data);
-void postgame(char *);
+String livegame(char *data);

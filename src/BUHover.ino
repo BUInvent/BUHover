@@ -15,7 +15,7 @@ void setup() {
 void loop() {
     static unsigned long nextTrigger = 10 * 1000;
 
-    // pull the webhook every 5 seconds
+    // pull the webhook every 10 seconds
     if (nextTrigger < millis()) {
         nextTrigger = millis() + 10*1000;
         Particle.publish("NHLscores2");
