@@ -11,12 +11,16 @@ String data_byte;
 void gotScores(const char *event, const char *data) {
 
     static String data_temp;
+    static int data_count = 0;
     data_byte = strtok(strdup(data), ",");
 
-    if ( strcmp(data_byte, "data") != 0 || strcmp(data, data_temp) == 0) {}
+    if ( strcmp(data_byte, "data") != 0 || ( strcmp(data, data_temp) == 0 && data_count < 10 )) {
+      data_count ++;
+    }
 
     else {
 
+      data_count = 0;
       String isUnplayed = strtok(NULL, ",");
   		String isinProgress = strtok(NULL, ",");
   		String isCompleted = strtok(NULL, ",");
