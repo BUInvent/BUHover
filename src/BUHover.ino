@@ -6,9 +6,20 @@
 
 #include "functions.h"
 
+char buf[256];
+char date[10];
+String league;
+String team;
+
 void setup() {
     // subscribe to the webhook
-    Particle.subscribe("hook-response/NHLscores2", gotScores, MY_DEVICES);
+    league = "NHL";
+    team = "PIT";
+    Time.zone(-4);
+
+    Particle.subscribe("hook-response/" + league + "Scores", gotScores, MY_DEVICES);
+    sprintf(date,  "%d%02d%02d", Time.year(), Time.month(), Time.day());
+    snprintf(buf, sizeof(buf), "{\"date\":\"%s\",\"team\":\"%s\"}", date, team.c_str());
 }
 
 
@@ -18,7 +29,7 @@ void loop() {
     // pull the webhook every 10 seconds
     if (nextTrigger < millis()) {
         nextTrigger = millis() + 10*1000;
-        Particle.publish("NHLscores2");
+        Particle.publish( league + "Scores", buf, PRIVATE );
 
     }
 }

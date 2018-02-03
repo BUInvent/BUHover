@@ -27,7 +27,6 @@ void gotScores(const char *event, const char *data) {
   		String isinProgress = strtok(NULL, ",");
   		String isCompleted = strtok(NULL, ",");
 
-
       // If game has not been played yet display no score or time
       if (strcmp(isUnplayed, "true") == 0) {
         Serial.println("data,0,0,0,0,0");
@@ -79,5 +78,5 @@ String livegame( String home_score, String away_score, String period, String sec
     return("data," + home_score + "," + away_score + "," + period + "," + minutes + "," + seconds);
 
   }
-  
+
 }
