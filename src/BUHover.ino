@@ -11,15 +11,15 @@ char date[10];
 String league;
 String team;
 
-void setup() {
-    // subscribe to the webhook
-    league = "NHL";
-    team = "PIT";
-    Time.zone(-4);
+int teamLeague(String teamLeague);
 
-    Particle.subscribe("hook-response/" + league + "Scores", gotScores, MY_DEVICES);
-    sprintf(date,  "%d%02d%02d", Time.year(), Time.month(), Time.day());
-    snprintf(buf, sizeof(buf), "{\"date\":\"%s\",\"team\":\"%s\"}", date, team.c_str());
+void setup() {
+
+    Particle.function("NBA CHI", teamLeague);
+    Time.zone(-4);
+    teamLeague("NBA CHI");
+
+
 }
 
 
@@ -29,7 +29,31 @@ void loop() {
     // pull the webhook every 10 seconds
     if (nextTrigger < millis()) {
         nextTrigger = millis() + 10*1000;
+        Serial.println("league = " + league);
+        Serial.println("team = " + team);
         Particle.publish( league + "Scores", buf, PRIVATE );
 
+
+
     }
+}
+
+// this function automagically gets called upon a matching POST request
+int teamLeague(String teamLeague)
+{
+  // look for the matching argument "coffee" <-- max of 64 characters long
+  if(teamLeague != "")
+  {
+    league = strtok( strdup(teamLeague), " " );
+    team = strtok( NULL, "," );
+
+    Particle.subscribe("hook-response/" + league + "Scores", gotScores, MY_DEVICES);
+    sprintf(date,  "%d%02d%02d", Time.year(), Time.month(), Time.day());
+    snprintf(buf, sizeof(buf), "{\"date\":\"%s\",\"team\":\"%s\"}", date, team.c_str());
+
+    Serial.println("league = " + league);
+    Serial.println("team = " + team);
+    return 1;
+  }
+  else return -1;
 }
