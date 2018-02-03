@@ -15,9 +15,9 @@ int teamLeague(String teamLeague);
 
 void setup() {
 
-    Particle.function("NBA CHI", teamLeague);
+    Particle.function("teamLeague", teamLeague);
     Time.zone(-4);
-    teamLeague("NBA CHI");
+    // teamLeague("NBA CHI");
 
 
 }
@@ -29,11 +29,7 @@ void loop() {
     // pull the webhook every 10 seconds
     if (nextTrigger < millis()) {
         nextTrigger = millis() + 10*1000;
-        Serial.println("league = " + league);
-        Serial.println("team = " + team);
         Particle.publish( league + "Scores", buf, PRIVATE );
-
-
 
     }
 }
@@ -44,6 +40,7 @@ int teamLeague(String teamLeague)
   // look for the matching argument "coffee" <-- max of 64 characters long
   if(teamLeague != "")
   {
+
     league = strtok( strdup(teamLeague), " " );
     team = strtok( NULL, "," );
 
@@ -51,9 +48,8 @@ int teamLeague(String teamLeague)
     sprintf(date,  "%d%02d%02d", Time.year(), Time.month(), Time.day());
     snprintf(buf, sizeof(buf), "{\"date\":\"%s\",\"team\":\"%s\"}", date, team.c_str());
 
-    Serial.println("league = " + league);
-    Serial.println("team = " + team);
     return 1;
+
   }
   else return -1;
 }
