@@ -1,8 +1,8 @@
-  /*
-      Project BUScore by Jason
-      This project file is for the "HoverBoard" (Particle Photon wifi module)
-      It is the main function that will  grab data from the webhook, parse it, and send it to the "BattleShip"
-                                                                                      */
+/*
+    Project BUScore by Jason
+    This project file is for the "HoverBoard" (Particle Photon wifi module)
+    It is the main function that will  grab data from the webhook, parse it, and send it to the "BattleShip"
+*/
 
 #include "functions.h"
 
@@ -24,9 +24,9 @@ void setup() {
 
 void loop() {
 
-    // pull the webhook every 10 seconds
-    Particle.publish( league + "Scores", date_team, PRIVATE );
-    delay(10000);
+  // pull the webhook every 10 seconds
+  Particle.publish( league + "Scores", date_team, PRIVATE );
+  delay(10000);
 
 }
 
