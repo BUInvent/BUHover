@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// This function will serial print the data in the format of:
+// This function will Serial1 print the data in the format of:
 // data,home score,away score,period,minutes,seconds
 void got_scores(const char* event, const char* data)
 {
@@ -35,7 +35,7 @@ void got_scores(const char* event, const char* data)
 
     // If game has not been played yet display no score or time
     if (strcmp(isUnplayed.c_str(), "true") == 0) {
-        Serial.println("data,0,0,0,0,0");
+        Serial1.println("data,0,0,0,0,0");
     }
 
     // if game is currently in progress
@@ -50,7 +50,7 @@ void got_scores(const char* event, const char* data)
         int minutes = int_seconds / 60;
         int seconds = int_seconds % 60;
 
-        Serial.printf("data,%s,%s,%s,%d,%d\n", home_score.c_str(), away_score.c_str(), period.c_str(), minutes, seconds);
+        Serial1.printf("data,%s,%s,%s,%d,%d\n", home_score.c_str(), away_score.c_str(), period.c_str(), minutes, seconds);
     }
 
     // if game is finished display the final score, the time as 0, and "F" for period
@@ -58,6 +58,6 @@ void got_scores(const char* event, const char* data)
 
         string home_score = strtok(NULL, ",");
         string away_score = strtok(NULL, ",");
-        Serial.println(("data," + home_score + "," + away_score + ",F,0,0").c_str());
+        Serial1.println(("data," + home_score + "," + away_score + ",F,0,0").c_str());
     }
 }

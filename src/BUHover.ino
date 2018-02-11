@@ -18,6 +18,7 @@ void setup() {
   // and set the time zone for when we get the date
   Particle.function("team_league", team_league);
   Time.zone(-7);
+  Serial1.begin(9600);
 
 }
 
