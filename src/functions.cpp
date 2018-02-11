@@ -35,29 +35,28 @@ void got_scores(const char* event, const char* data)
 
     // If game has not been played yet display no score or time
     if (strcmp(isUnplayed.c_str(), "true") == 0) {
-        Serial1.println("data,0,0,0,0,0");
+        Serial1.println("data,00,00,0,0,0");
     }
 
     // if game is currently in progress
     else if (strcmp(isinProgress.c_str(), "true") == 0) {
 
-        string home_score = strtok(NULL, ",");
-        string away_score = strtok(NULL, ",");
-        string period = strtok(NULL, ",");
-        string seconds_remaining = strtok(NULL, ",");
+        int home_score = atoi(strtok(NULL, ","));
+        int away_score = atoi(strtok(NULL, ","));
+        int period = atoi(strtok(NULL, ","));
+        int seconds_remaining = atoi(strtok(NULL, ","));
 
-        int int_seconds = atoi(seconds_remaining.c_str());
-        int minutes = int_seconds / 60;
-        int seconds = int_seconds % 60;
+        int minutes = seconds_remaining / 60;
+        int seconds = seconds_remaining % 60;
 
-        Serial1.printf("data,%s,%s,%s,%d,%d\n", home_score.c_str(), away_score.c_str(), period.c_str(), minutes, seconds);
+        Serial1.printf("data,%02d,%02d,%d,%d,%d\n", home_score, away_score, period, minutes, seconds);
     }
 
     // if game is finished display the final score, the time as 0, and "F" for period
     else {
 
-        string home_score = strtok(NULL, ",");
-        string away_score = strtok(NULL, ",");
-        Serial1.println(("data," + home_score + "," + away_score + ",F,0,0").c_str());
+        int home_score = atoi(strtok(NULL, ","));
+        int away_score = atoi(strtok(NULL, ","));
+        Serial1.printf("data,%02d,%02d,F,0,0\n", home_score, away_score);
     }
 }
