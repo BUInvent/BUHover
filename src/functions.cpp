@@ -52,11 +52,11 @@ void got_scores(const char* event, const char* data)
         Serial1.printf("data,%02d,%02d,%d,%02d,%02d\n", home_score, away_score, period, minutes, seconds);
     }
 
-    // if game is finished display the final score, the time as 0, and "F" for period
+    // if game is finished display the final score, the time as 0, and "10" for period
     else {
 
         int home_score = atoi(strtok(NULL, ","));
         int away_score = atoi(strtok(NULL, ","));
-        Serial1.printf("data,%02d,%02d,F,00,00\n", home_score, away_score);
+        Serial1.printf("data,%02d,%02d,10,00,00\n", home_score, away_score);
     }
 }
