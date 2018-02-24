@@ -41,22 +41,22 @@ void got_scores(const char* event, const char* data)
     // if game is currently in progress
     else if (strcmp(isinProgress.c_str(), "true") == 0) {
 
-        int home_score = atoi(strtok(NULL, ","));
         int away_score = atoi(strtok(NULL, ","));
+        int home_score = atoi(strtok(NULL, ","));
         int period = atoi(strtok(NULL, ","));
         int seconds_remaining = atoi(strtok(NULL, ","));
 
         int minutes = seconds_remaining / 60;
         int seconds = seconds_remaining % 60;
 
-        Serial1.printf("data,%02d,%02d,%d,%02d,%02d\n", home_score, away_score, period, minutes, seconds);
+        Serial1.printf("data,%02d,%02d,%d,%02d,%02d\n", away_score, home_score, period, minutes, seconds);
     }
 
     // if game is finished display the final score, the time as 0, and "10" for period
     else {
 
-        int home_score = atoi(strtok(NULL, ","));
         int away_score = atoi(strtok(NULL, ","));
-        Serial1.printf("data,%02d,%02d,10,00,00\n", home_score, away_score);
+        int home_score = atoi(strtok(NULL, ","));
+        Serial1.printf("data,%02d,%02d,10,00,00\n", away_score, home_score);
     }
 }
